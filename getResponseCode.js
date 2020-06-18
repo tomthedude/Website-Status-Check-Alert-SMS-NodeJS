@@ -62,7 +62,7 @@ function handleScreenShot(statusCode) {
 function takeAndSendScreenShot(statusCode) {
   const captureWebsite = require('capture-website');
  
-  (async (statusCode) => {
+  (async () => {
     filename = 'screenshot' + Date.now() + '.png';
   await captureWebsite.file(WEBSITE_URL, filename);
   sendScreenshot(statusCode, filename);
@@ -77,7 +77,8 @@ function sendScreenshot(statusCode, filename) {
     },
   ];
   sendEmail(GMAIL_USERNAME,
-    `web status: ${statusCode}, status time: ${humanReadableStatusDuration}`,
+    `web status: ${statusCode}, status duration: ${humanReadableStatusDuration}`,
+    `web status: ${statusCode}, status duration: ${humanReadableStatusDuration}`,
     attachment);
 }
 
