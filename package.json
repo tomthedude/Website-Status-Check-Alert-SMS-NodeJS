@@ -1,0 +1,16 @@
+{
+  "name": "web-status-plivo-sms",
+  "version": "1.0.0",
+  "description": "check web status and send sms when down",
+  "main": "start.js",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "plivo": "^4.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
