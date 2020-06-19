@@ -7,12 +7,11 @@ module.exports = class Main {
     this.statusCode = 200;
     const notifierClass = require("../Tools/Notifier");
     this.notifier = new notifierClass();
+    this.prettyMilliseconds = require("pretty-ms");
+    this.https = require("https");
   }
   checkWebsite(url, interval) {
-    const https = require("https");
-    const prettyMilliseconds = require("pretty-ms");
-
-    https
+    this.https
       .get(url, (res) => {
         this.statusCode = res.statusCode;
         console.log("statusCode:", res.statusCode);
@@ -20,13 +19,13 @@ module.exports = class Main {
           console.log("alles ok");
           interval = this.settings.CHECK_INTERVAL_OK;
         } else {
+          this.handleTiming(interval);
+          interval = this.settings.CHECK_INTERVAL_ERROR;
+          this.humanReadableStatusDuration = this.prettyMilliseconds(
+            this.totalStatusTimeSeconds * 1000
+          );
           this.notifier.notify(res, this.humanReadableStatusDuration);
-          var interval = this.settings.CHECK_INTERVAL_ERROR;
         }
-        this.humanReadableStatusDuration = prettyMilliseconds(
-          this.totalStatusTimeSeconds * 1000
-        );
-        this.handleTiming(interval);
         console.log(`total status time: ${this.humanReadableStatusDuration}`);
         setTimeout(() => {
           this.checkWebsite(url, interval);
