@@ -27,7 +27,7 @@ function checkWebsite(url, interval) {
         console.log("alles ok");
         interval = CHECK_INTERVAL_WHEN_OK;
       } else {
-        sendSMS(getSMSTextFromStatusCode(res.statusCode));
+        //sendSMS(getSMSTextFromStatusCode(res.statusCode));
         handleScreenShot(res.statusCode);
         console.log("error" + res.statusCode);
         interval = CHECK_INTERVAL_WHEN_ERROR;
