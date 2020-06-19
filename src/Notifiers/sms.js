@@ -6,7 +6,7 @@ module.exports = class SMS {
     return this.settings.ALERT_SMS == "true";
   }
   sendSMS(text, from, to) {
-    if (!isActive()) {
+    if (!this.isActive()) {
       return;
     }
     let plivo = require("plivo");

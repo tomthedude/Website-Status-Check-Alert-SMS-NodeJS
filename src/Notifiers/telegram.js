@@ -10,7 +10,7 @@ module.exports = class TelegramNotifier {
     return this.settings.ALERT_TELEGRAM == "true";
   }
   sendMessage(message) {
-    if (!isActive()) {
+    if (!this.isActive()) {
       return;
     }
     this.bot.sendMessage(this.chatId, message);
