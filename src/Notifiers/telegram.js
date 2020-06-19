@@ -9,7 +9,7 @@ module.exports = class TelegramNotifier {
   isActive() {
     return this.settings.ALERT_TELEGRAM == "true";
   }
-  sendMessage(statusCode, humanReadableStatusDuration) {
+  sendMessage(statusCode, humanReadableStatusDuration, url) {
     if (!this.isActive()) {
       return;
     }
@@ -21,6 +21,7 @@ module.exports = class TelegramNotifier {
       default:
         message = `error! response code ${statusCode}, duration: ${humanReadableStatusDuration}`;
     }
+    message += ", url: " + url;
     this.bot.sendMessage(this.chatId, message);
   }
 };

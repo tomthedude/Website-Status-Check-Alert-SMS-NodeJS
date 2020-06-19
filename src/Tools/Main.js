@@ -14,26 +14,29 @@ module.exports = class Main {
     this.https
       .get(url, (res) => {
         this.statusCode = res.statusCode;
+        this.handleTiming(interval);
+        this.humanReadableStatusDuration = this.prettyMilliseconds(
+          this.totalStatusTimeSeconds * 1000
+        );
         console.log("statusCode:", res.statusCode);
-        if (res.statusCode != "200") {
-          console.log("alles ok");
+        if (res.statusCode == "200") {
+          console.log("alles ok, " + url);
           interval = this.settings.CHECK_INTERVAL_OK;
         } else {
-          this.handleTiming(interval);
           interval = this.settings.CHECK_INTERVAL_ERROR;
-          this.humanReadableStatusDuration = this.prettyMilliseconds(
-            this.totalStatusTimeSeconds * 1000
-          );
           this.notifier.notify(res, this.humanReadableStatusDuration);
         }
-        console.log(`total status time: ${this.humanReadableStatusDuration}`);
+        console.log(
+          `total status time: ${this.humanReadableStatusDuration}, url: ${url}`
+        );
         setTimeout(() => {
           this.checkWebsite(url, interval);
         }, interval * 1000);
         //console.log('headers:', res.headers);
       })
       .on("error", (e) => {
-        console.error(e);
+        console.log("error with get, url: " + url);
+        //console.error(e);
       });
   }
 

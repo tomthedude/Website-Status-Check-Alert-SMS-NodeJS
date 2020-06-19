@@ -1,4 +1,6 @@
 var fs = require('fs');
+
+// init
 const settings = require("./settings");
 let mainAppClass = require("./Tools/Main");
 let interval = settings.CHECK_INTERVAL_OK;

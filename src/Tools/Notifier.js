@@ -7,6 +7,7 @@ module.exports = class Notifier {
     this.smsHandler = new smsClass();
     let TelegramNotifier = require(".././Notifiers/telegram");
     this.telegramHandler = new TelegramNotifier();
+    this.url = url;
   }
   notify(res, humanReadableStatusDuration) {
     //send sms
@@ -14,7 +15,7 @@ module.exports = class Notifier {
       res.statusCode,
       humanReadableStatusDuration
     );
-
+    smsText += `, url: ${this.url}`;
     this.smsHandler.sendSMS(
       smsText,
       this.settings.SENDER_NUMBER,
@@ -28,7 +29,11 @@ module.exports = class Notifier {
       humanReadableStatusDuration
     );
     //send telegram
-    this.telegramHandler.sendMessage(res.statusCode, humanReadableStatusDuration);
+    this.telegramHandler.sendMessage(
+      res.statusCode,
+      humanReadableStatusDuration,
+      this.url
+    );
     console.log("error" + res.statusCode);
   }
 };
