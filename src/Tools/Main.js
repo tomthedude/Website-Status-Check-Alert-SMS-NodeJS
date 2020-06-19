@@ -40,13 +40,13 @@ module.exports = class Main {
           console.log("error" + res.statusCode);
           interval = this.settings.CHECK_INTERVAL_ERROR;
         }
-        this.handleTiming(interval);
         this.humanReadableStatusDuration = prettyMilliseconds(
           this.totalStatusTimeSeconds * 1000
         );
+        this.handleTiming(interval);
         console.log(`total status time: ${this.humanReadableStatusDuration}`);
         setTimeout(() => {
-          checkWebsite(url, interval);
+          this.checkWebsite(url, interval);
         }, interval * 1000);
         //console.log('headers:', res.headers);
       })
