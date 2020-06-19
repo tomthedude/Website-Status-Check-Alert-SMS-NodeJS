@@ -1,22 +1,17 @@
+const settings = require("./settings");
+
 const https = require("https");
-const dotenv = require("dotenv");
 const prettyMilliseconds = require('pretty-ms');
-dotenv.config();
 
-const WEBSITE_URL = process.env.WEBSITE_URL;
-const CHECK_INTERVAL_WHEN_OK = parseInt(process.env.CHECK_INTERVAL_WHEN_OK);
-const CHECK_INTERVAL_WHEN_ERROR = parseInt(process.env.CHECK_INTERVAL_WHEN_ERROR);
-const SENDER_NUMBER = process.env.SENDER_NUMBER;
-const NOTIFICATION_NUMBER = process.env.NOTIFICATION_NUMBER;
-const GMAIL_USERNAME = process.env.GMAIL_USERNAME;
-const GMAIL_PASSWORD = process.env.GMAIL_PASSWORD;
 
-let interval = CHECK_INTERVAL_WHEN_OK;
+//settings
+
+let interval = settings.CHECK_INTERVAL_OK;
 let latestStatus = null;
 let totalStatusTimeSeconds = 0;
 let humanReadableStatusDuration = '';
 
-checkWebsite(WEBSITE_URL, interval);
+checkWebsite(settings.WEBSITE_URL, interval);
 
 function checkWebsite(url, interval) {
   https
@@ -25,12 +20,12 @@ function checkWebsite(url, interval) {
       console.log("statusCode:", res.statusCode);
       if (res.statusCode == "200") {
         console.log("alles ok");
-        interval = CHECK_INTERVAL_WHEN_OK;
+        interval = settings.CHECK_INTERVAL_OK;
       } else {
-        //sendSMS(getSMSTextFromStatusCode(res.statusCode));
-        handleScreenShot(res.statusCode);
+        //sendSMS(getSMSTextFromStatusCode(res.statusCode), settings.SENDER_NUMBER, settings.NOTIFICATION_NUMBER);
+        handleScreenShot(res.statusCode, url, settings.GMAIL_USERNAME);
         console.log("error" + res.statusCode);
-        interval = CHECK_INTERVAL_WHEN_ERROR;
+        interval = settings.CHECK_INTERVAL_ERROR;
       }
       handleTiming(statusCode, interval);
       humanReadableStatusDuration = prettyMilliseconds(totalStatusTimeSeconds * 1000);
@@ -55,38 +50,38 @@ function handleTiming(statusCode, interval) {
   latestStatus = statusCode;
 }
 
-function handleScreenShot(statusCode) {
-  takeAndSendScreenShot(statusCode);
+function handleScreenShot(statusCode, url, recipient) {
+  takeAndSendScreenShot(statusCode, url, recipient);
 }
 
-function takeAndSendScreenShot(statusCode) {
+function takeAndSendScreenShot(statusCode, url, recipient) {
   const captureWebsite = require('capture-website');
  
   (async () => {
     filename = 'screenshot' + Date.now() + '.png';
-  await captureWebsite.file(WEBSITE_URL, filename);
-  sendScreenshot(statusCode, filename);
+  await captureWebsite.file(url, filename);
+  sendScreenshot(statusCode, filename, recipient);
 })();
 }
 
-function sendScreenshot(statusCode, filename) {
+function sendScreenshot(statusCode, filename, recipient) {
   attachment = [
     {
       filename: "website-screenshot.png",
       path: filename,
     },
   ];
-  sendEmail(GMAIL_USERNAME,
+  sendEmail(recipient,
     `web status: ${statusCode}, status duration: ${humanReadableStatusDuration}`,
     `web status: ${statusCode}, status duration: ${humanReadableStatusDuration}`,
     attachment);
 }
 
-function sendSMS(text) {
+function sendSMS(text, from, to) {
   let plivo = require("plivo");
   let client = new plivo.Client();
   client.messages
-    .create(SENDER_NUMBER, NOTIFICATION_NUMBER, text)
+    .create(from, to, text)
     .then(function (message_created) {
       console.log(message_created);
     });
@@ -111,13 +106,13 @@ function sendEmail(email, subject, body, attchment = []) {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: GMAIL_USERNAME,
-      pass: GMAIL_PASSWORD,
+      user: settings.GMAIL_USERNAME,
+      pass: settings.GMAIL_PASSWORD,
     },
   });
 
   var mailOptions = {
-    from: GMAIL_USERNAME,
+    from: settings.GMAIL_USERNAME,
     to: email,
     subject: subject,
     html: body,
