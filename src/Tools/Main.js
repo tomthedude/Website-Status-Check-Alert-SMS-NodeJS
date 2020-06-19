@@ -5,15 +5,12 @@ module.exports = class Main {
     this.latestStatus = 200;
     this.humanReadableStatusDuration = "";
     this.statusCode = 200;
+    const notifierClass = require("../Tools/Notifier");
+    this.notifier = new notifierClass();
   }
   checkWebsite(url, interval) {
     const https = require("https");
     const prettyMilliseconds = require("pretty-ms");
-
-    let screenshotClass = require(".././Tools/Screenshot");
-    let screenshotHandler = new screenshotClass();
-    let smsClass = require(".././Notifiers/SMS");
-    let smsHandler = new smsClass();
 
     https
       .get(url, (res) => {
@@ -23,22 +20,7 @@ module.exports = class Main {
           console.log("alles ok");
           interval = this.settings.CHECK_INTERVAL_OK;
         } else {
-          smsText = smsHandler.getSMSTextFromStatusCode(
-            res.statusCode,
-            this.humanReadableStatusDuration
-          );
-          smsHandler.sendSMS(
-            smsText,
-            this.settings.SENDER_NUMBER,
-            this.settings.NOTIFICATION_NUMBER
-          );
-          screenshotHandler.handleScreenShot(
-            res.statusCode,
-            url,
-            settings.GMAIL_USERNAME
-          );
-          console.log("error" + res.statusCode);
-          interval = this.settings.CHECK_INTERVAL_ERROR;
+          this.notifier.notify(res, this.humanReadableStatusDuration);
         }
         this.humanReadableStatusDuration = prettyMilliseconds(
           this.totalStatusTimeSeconds * 1000

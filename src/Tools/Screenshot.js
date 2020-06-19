@@ -1,16 +1,21 @@
 module.exports = class Screenshot {
-  handleScreenShot(statusCode, url, recipient) {
+  constructor() {
+    this.settings = require("../settings");
+    this.url = this.settings.WEBSITE_URL;
+  }
+  handleScreenShot(statusCode, recipient, humanReadableStatusDuration) {
+    this.humanReadableStatusDuration = humanReadableStatusDuration;
     var EmailNotifier = require(".././Notifiers/email");
     this.emailHandler = new EmailNotifier();
-    this.takeAndSendScreenShot(statusCode, url, recipient);
+    this.takeAndSendScreenShot(statusCode, recipient);
   }
 
-  takeAndSendScreenShot(statusCode, url, recipient) {
+  takeAndSendScreenShot(statusCode, recipient) {
     const captureWebsite = require("capture-website");
 
     (async () => {
       filename = "screenshot" + Date.now() + ".png";
-      await captureWebsite.file(url, filename);
+      await captureWebsite.file(this.url, filename);
       this.sendScreenshot(statusCode, filename, recipient);
     })();
   }
@@ -22,10 +27,10 @@ module.exports = class Screenshot {
         path: filename,
       },
     ];
-    emailHandler.sendEmail(
+    this.emailHandler.sendEmail(
       recipient,
-      `web status: ${statusCode}, status duration: ${humanReadableStatusDuration}`,
-      `web status: ${statusCode}, status duration: ${humanReadableStatusDuration}`,
+      `web status: ${statusCode}, status duration: ${this.humanReadableStatusDuration}`,
+      `web status: ${statusCode}, status duration: ${this.humanReadableStatusDuration}`,
       attachment
     );
   }
