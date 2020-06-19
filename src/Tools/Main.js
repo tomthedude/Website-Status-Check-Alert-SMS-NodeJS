@@ -10,6 +10,7 @@ module.exports = class Main {
     this.prettyMilliseconds = require("pretty-ms");
     this.https = require("https");
     this.currentStatusStats = { url: url, statusCode: 200, duration: 0 };
+      this.responseTimes = {};
       this.tableObject = {};
       this.url = url;
       this.statsTable = statsTable;
@@ -26,15 +27,19 @@ module.exports = class Main {
       screen.append(this.table);
   }
   addEntryToTable() {
-    this.statsTable.dispalyTable.push([Date.now(), this.url, this.statusCode, this.humanReadableStatusDuration]);
+    //this.statsTable.dispalyTable.push([Date.now(), this.url, this.statusCode, this.humanReadableStatusDuration]);
   }
   showStats() {
-      this.statsTable.dispalyTable[0] = [Date.now(), this.url, this.statusCode, this.humanReadableStatusDuration];
+      //this.statsTable.dispalyTable[0] = [Date.now(), this.url, this.statusCode, this.humanReadableStatusDuration];
       this.table.setData(this.statsTable.dispalyTable);
   }
-  checkWebsite(url, interval) {
+    checkWebsite(url, interval) {
+        var responseTimeStart = new Date();
+        
     this.https
-      .get(url, (res) => {
+        .get(url, (res) => {
+            var responseTime = new Date() - responseTimeStart;
+            this.responseTimes[new Date()] = responseTime;
         this.statusCode = res.statusCode;
         this.handleTiming(interval);
         this.humanReadableStatusDuration = this.prettyMilliseconds(
