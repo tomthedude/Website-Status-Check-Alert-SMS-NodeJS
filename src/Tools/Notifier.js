@@ -1,8 +1,8 @@
 module.exports = class Notifier {
-  constructor() {
+  constructor(url) {
     this.settings = require("../settings");
     let screenshotClass = require(".././Tools/Screenshot");
-    this.screenshotHandler = new screenshotClass();
+    this.screenshotHandler = new screenshotClass(url);
     let smsClass = require(".././Notifiers/SMS");
     this.smsHandler = new smsClass();
     let TelegramNotifier = require(".././Notifiers/telegram");

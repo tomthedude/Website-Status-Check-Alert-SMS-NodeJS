@@ -1,7 +1,7 @@
 module.exports = class Screenshot {
-  constructor() {
+  constructor(url) {
     this.settings = require("../settings");
-    this.url = this.settings.WEBSITE_URL;
+    this.url = url;
   }
   handleScreenShot(statusCode, recipient, humanReadableStatusDuration) {
     this.humanReadableStatusDuration = humanReadableStatusDuration;
@@ -14,7 +14,7 @@ module.exports = class Screenshot {
     const captureWebsite = require("capture-website");
 
     (async () => {
-      var filename = "screenshot" + Date.now() + ".png";
+      var filename = "screenshots/screenshot" + Date.now() + ".png";
       await captureWebsite.file(this.url, filename);
       this.sendScreenshot(statusCode, filename, recipient);
     })();

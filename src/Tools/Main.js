@@ -1,12 +1,12 @@
 module.exports = class Main {
-  constructor() {
+  constructor(url) {
     this.settings = require("../settings");
     this.totalStatusTimeSeconds = 0;
     this.latestStatus = 200;
     this.humanReadableStatusDuration = "";
     this.statusCode = 200;
     const notifierClass = require("../Tools/Notifier");
-    this.notifier = new notifierClass();
+    this.notifier = new notifierClass(url);
     this.prettyMilliseconds = require("pretty-ms");
     this.https = require("https");
   }
