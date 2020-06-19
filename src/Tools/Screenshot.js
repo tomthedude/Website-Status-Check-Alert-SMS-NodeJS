@@ -14,14 +14,14 @@ module.exports = class Screenshot {
     const captureWebsite = require("capture-website");
 
     (async () => {
-      filename = "screenshot" + Date.now() + ".png";
+      var filename = "screenshot" + Date.now() + ".png";
       await captureWebsite.file(this.url, filename);
       this.sendScreenshot(statusCode, filename, recipient);
     })();
   }
 
   sendScreenshot(statusCode, filename, recipient) {
-    attachment = [
+    let attachment = [
       {
         filename: "website-screenshot.png",
         path: filename,

@@ -9,7 +9,8 @@ module.exports = class Notifier {
     this.telegramHandler = new TelegramNotifier();
   }
   notify(res, humanReadableStatusDuration) {
-    smsText = this.smsHandler.getSMSTextFromStatusCode(
+    //send sms
+    var smsText = this.smsHandler.getSMSTextFromStatusCode(
       res.statusCode,
       humanReadableStatusDuration
     );
@@ -19,12 +20,15 @@ module.exports = class Notifier {
       this.settings.SENDER_NUMBER,
       this.settings.NOTIFICATION_NUMBER
     );
+
+    // send email with screenshot
     this.screenshotHandler.handleScreenShot(
       res.statusCode,
-      this.settings.GMAIL_USERNAME
+      this.settings.GMAIL_USERNAME,
+      humanReadableStatusDuration
     );
-    telegramHandler.sendMessage("Received your message");
+    //send telegram
+    this.telegramHandler.sendMessage("Received your message");
     console.log("error" + res.statusCode);
-    interval = this.settings.CHECK_INTERVAL_ERROR;
   }
 };

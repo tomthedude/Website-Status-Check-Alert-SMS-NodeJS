@@ -16,11 +16,12 @@ module.exports = class Main {
       .get(url, (res) => {
         this.statusCode = res.statusCode;
         console.log("statusCode:", res.statusCode);
-        if (res.statusCode == "200") {
+        if (res.statusCode != "200") {
           console.log("alles ok");
           interval = this.settings.CHECK_INTERVAL_OK;
         } else {
           this.notifier.notify(res, this.humanReadableStatusDuration);
+          var interval = this.settings.CHECK_INTERVAL_ERROR;
         }
         this.humanReadableStatusDuration = prettyMilliseconds(
           this.totalStatusTimeSeconds * 1000
