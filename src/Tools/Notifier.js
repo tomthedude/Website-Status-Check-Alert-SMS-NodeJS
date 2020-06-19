@@ -28,7 +28,7 @@ module.exports = class Notifier {
       humanReadableStatusDuration
     );
     //send telegram
-    this.telegramHandler.sendMessage("Received your message");
+    this.telegramHandler.sendMessage(res.statusCode, humanReadableStatusDuration);
     console.log("error" + res.statusCode);
   }
 };

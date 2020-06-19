@@ -9,9 +9,17 @@ module.exports = class TelegramNotifier {
   isActive() {
     return this.settings.ALERT_TELEGRAM == "true";
   }
-  sendMessage(message) {
+  sendMessage(statusCode, humanReadableStatusDuration) {
     if (!this.isActive()) {
       return;
+    }
+    var message = "";
+    switch (statusCode) {
+      case 200:
+        message = `all is ok, was warning for ${humanReadableStatusDuration}`;
+        break;
+      default:
+        message = `error! response code ${statusCode}, duration: ${humanReadableStatusDuration}`;
     }
     this.bot.sendMessage(this.chatId, message);
   }

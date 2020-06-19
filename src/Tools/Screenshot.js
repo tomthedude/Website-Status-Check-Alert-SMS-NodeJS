@@ -29,7 +29,7 @@ module.exports = class Screenshot {
     ];
     this.emailHandler.sendEmail(
       recipient,
-      `web status: ${statusCode}, status duration: ${this.humanReadableStatusDuration}`,
+      `web status: ${statusCode}`,
       `web status: ${statusCode}, status duration: ${this.humanReadableStatusDuration}`,
       attachment
     );
