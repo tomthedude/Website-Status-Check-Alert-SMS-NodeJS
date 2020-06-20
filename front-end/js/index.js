@@ -16,8 +16,7 @@ $("#view-doctors").on("click", function () {
       $(button).prop("disabled", true);
       // Set timeout for lazy loading
       let interval = 0;
-      setInterval(function () {
-        interval = 60000 * 5;
+      setTimeout(function () {
         var result = JSON.parse(evt);
         const ordered = {};
         Object.keys(result)
@@ -63,7 +62,7 @@ $("#view-doctors").on("click", function () {
         html += "</div>";
         // Set all content
         $(".tables-doctor").html(html);
-      }, interval);
+      }, 1000);
     })
     .fail(function () {
       alert("Error : Failed to reach API Url or check your connection");
@@ -75,6 +74,10 @@ $("#view-doctors").on("click", function () {
       }, 1000);
     });
 });
+$("#view-doctors").trigger("click");
+setInterval(function () {
+    $("#view-doctors").trigger("click");
+}, 60000);
 
 function findGetParameter(parameterName) {
   var result = null,
