@@ -15,7 +15,9 @@ $("#view-doctors").on("click", function () {
       // Disable button
       $(button).prop("disabled", true);
       // Set timeout for lazy loading
+      let interval = 0;
       setInterval(function () {
+        interval = 60000 * 5;
         var result = JSON.parse(evt);
         const ordered = {};
         Object.keys(result)
@@ -23,7 +25,7 @@ $("#view-doctors").on("click", function () {
           .forEach(function (key) {
             ordered[key] = result[key];
           });
-        var html = "<h2>Lowchost.co.il</h2>";
+        var html = "<h2>"+getWebsiteName()+"</h2>";
         html += '<div class="tables-doctor-content">';
         html +=
           '<table class="table">' +
@@ -61,7 +63,7 @@ $("#view-doctors").on("click", function () {
         html += "</div>";
         // Set all content
         $(".tables-doctor").html(html);
-      }, 60000);
+      }, interval);
     })
     .fail(function () {
       alert("Error : Failed to reach API Url or check your connection");
@@ -85,4 +87,14 @@ function findGetParameter(parameterName) {
       if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
     });
   return result;
+}
+
+function getWebsiteName() {
+  var unformatted = findGetParameter("site");
+  var formatted = unformatted.replace("https", "https://");
+  formatted = formatted.replace(".json", "");
+  if (!formatted.contains("https")) {
+    formatted = formatted.replace("http", "http://");
+  }
+  return formatted;
 }
