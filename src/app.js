@@ -3,6 +3,8 @@ var fs = require("fs");
 // init
 const settings = require("./settings");
 let mainAppClass = require("./Tools/Main");
+let resultsServerClass = require("./Tools/ResultsServer");
+let resulstsServer = new resultsServerClass();
 let interval = settings.CHECK_INTERVAL_OK;
 let allResults = {};
 
@@ -31,3 +33,6 @@ setInterval(() => {
   }
   console.table(tableResults);
 }, settings.TERMINAL_ALL_RESULTS_INTERVAL * 1000);
+
+
+resulstsServer.run();

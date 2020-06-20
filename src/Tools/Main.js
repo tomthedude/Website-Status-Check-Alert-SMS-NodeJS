@@ -18,7 +18,7 @@ module.exports = class Main {
     this.responseTimes = [];
     this.url = url;
     this.resultsFileName =
-      "results/" + this.url.replace(/[\\/:"*?<>|]+/, "") + ".json";
+    this.settings.RESULTS_FOLDER + this.url.replace(/[\\/:"*?<>|]+/, "") + ".json";
     this.allResults = allResults;
     this.fs = require("fs");
     this.appendPrevResults();
