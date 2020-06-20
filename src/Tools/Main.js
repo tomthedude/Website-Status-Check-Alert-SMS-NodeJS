@@ -104,7 +104,7 @@ module.exports = class Main {
         }
         this.logger.logScriptError({
           result: "success",
-          message: "could not write results to file, " + this.url,
+          message: "wrote results to file, " + this.url,
           type: "write-to-file",
         });
       }
