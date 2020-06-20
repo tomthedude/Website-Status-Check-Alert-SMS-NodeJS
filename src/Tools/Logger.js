@@ -2,27 +2,35 @@ module.exports = class Logger {
   constructor(logName) {
     this.initLogName(logName);
     this.url = logName;
-    const winston = require("winston");
-    this.logger = winston.createLogger({
+      const winston = require("winston");
+    this.responseLogger = winston.createLogger({
       level: "info",
       format: winston.format.json(),
       defaultMeta: { service: this.logName },
       transports: [
-        new winston.transports.File({
-          filename: `logs/script-log-${this.logName}.log`,
-          level: "script-error",
-        }),
-        new winston.transports.File({
-          filename: `logs/script-log-${this.logName}.log`,
-          level: "script-info",
-        }),
         new winston.transports.File({
           filename: `logs/response-code-status-log-${this.logName}.log`,
         }),
         new winston.transports.Console(),
       ],
     });
-    this.logger.add(
+    this.scriptLogger = winston.createLogger({
+      level: "info",
+      format: winston.format.json(),
+      defaultMeta: { service: this.logName },
+      transports: [
+        new winston.transports.File({
+            filename: `logs/script-log-${this.logName}.log`,
+          }),
+        new winston.transports.Console(),
+      ],
+    });
+    this.responseLogger.add(
+      new winston.transports.Console({
+        format: winston.format.simple(),
+      })
+    );
+    this.scriptLogger.add(
       new winston.transports.Console({
         format: winston.format.simple(),
       })
@@ -30,7 +38,7 @@ module.exports = class Logger {
     return this;
   }
   log(object) {
-    this.logger.log(object);
+    this.responseLogger.log(object);
   }
 
   initLogName(logName) {
@@ -45,8 +53,8 @@ module.exports = class Logger {
     }
 
     var text = this.getJSONOrText(error);
-    this.logger.log({
-      level: "script-error",
+    this.scriptLogger.log({
+      level: "error",
       message: text,
     });
     console.log(`logged script error ${this.url}, ${text}`);
@@ -59,8 +67,8 @@ module.exports = class Logger {
       info += `url: ${this.url}`;
     }
     var text = this.getJSONOrText(info);
-    this.logger.log({
-      level: "script-info",
+    this.scriptLogger.log({
+      level: "info",
       message: text,
     });
     console.log(`logged script info ${this.url}`);
