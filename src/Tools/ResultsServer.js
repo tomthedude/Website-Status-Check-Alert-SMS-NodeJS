@@ -6,7 +6,17 @@ module.exports = class ResultsServer {
 
     http
       .createServer((req, res) => {
-        fs.readFile(this.settings.RESULTS_FOLDER + req.url, function (err, data) {
+        var folder = this.settings.FRON_END_FOLDER;
+        var formattedPage = req.url;
+        if (
+          req.url.includes(".json") &&
+          req.url.toLowerCase().indexOf("?") === -1
+        ) {
+          folder = this.settings.RESULTS_FOLDER;
+        } else if (req.url.toLowerCase().indexOf("?") > 0) {
+          var formattedPage = req.url.substring(0, req.url.indexOf("?"));
+        }
+        fs.readFile(folder + formattedPage, function (err, data) {
           if (err) {
             res.writeHead(404);
             res.end(JSON.stringify(err));

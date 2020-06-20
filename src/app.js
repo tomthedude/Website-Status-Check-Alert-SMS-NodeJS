@@ -4,6 +4,8 @@ var fs = require("fs");
 const settings = require("./settings");
 let mainAppClass = require("./Tools/Main");
 let resultsServerClass = require("./Tools/ResultsServer");
+let frontEndServerClass = require("./Tools/FrontEndServer");
+let frontEndServer = new frontEndServerClass();
 let resulstsServer = new resultsServerClass();
 let interval = settings.CHECK_INTERVAL_OK;
 let allResults = {};
@@ -36,3 +38,4 @@ setInterval(() => {
 
 
 resulstsServer.run();
+//frontEndServer.run();
