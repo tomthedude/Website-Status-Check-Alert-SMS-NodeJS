@@ -96,8 +96,5 @@ function getWebsiteName() {
   var unformatted = findGetParameter("site");
   var formatted = unformatted.replace("https", "https://");
   formatted = formatted.replace(".json", "");
-  if (!formatted.contains("https")) {
-    formatted = formatted.replace("http", "http://");
-  }
   return formatted;
 }
