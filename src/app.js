@@ -23,5 +23,11 @@ for (url in websitesObject) {
 }
 
 setInterval(() => {
-  console.table(allResults);
+  var tableResults = [];
+  for (url in allResults) {
+    for (data in allResults[url]) {
+      tableResults.unshift(allResults[url][data]);
+    }
+  }
+  console.table(tableResults);
 }, settings.TERMINAL_ALL_RESULTS_INTERVAL * 1000);
