@@ -1,12 +1,18 @@
 module.exports = class Main {
   constructor(url) {
+    this.loggerLevelsMap = {
+      200: "info",
+      300: "info",
+    };
     this.settings = require("../settings");
+    const loggerClass = require("./Logger");
+    this.logger = new loggerClass(url);
     this.totalStatusTimeSeconds = 0;
     this.latestStatus = 200;
     this.humanReadableStatusDuration = "";
     this.statusCode = 200;
     const notifierClass = require("../Tools/Notifier");
-    this.notifier = new notifierClass(url);
+    this.notifier = new notifierClass(url, this.logger);
     this.prettyMilliseconds = require("pretty-ms");
     this.https = require("https");
     this.responseTimes = [];
@@ -31,12 +37,16 @@ module.exports = class Main {
           interval = this.settings.CHECK_INTERVAL_ERROR;
           this.notifier.notify(res, this.humanReadableStatusDuration);
         }
+        this.logStats();
         this.showStats();
+        //this.logger.logScriptInfo({anotherInteration: true});
         setTimeout(() => {
           this.checkWebsite(url, interval);
         }, interval * 1000);
       })
       .on("error", (e) => {
+        e.url = url;
+        this.logger.logScriptError(e);
         console.log("error with get, url: " + url);
       });
   }
@@ -47,6 +57,32 @@ module.exports = class Main {
       totalTime += responseTimeObject.responseTime;
     });
     return this.prettyMilliseconds(totalTime / this.responseTimes.length);
+  }
+
+  logStats() {
+    this.logger.log({
+      level: this.getStatusLogLevel(),
+      message: this.getStatusLogMessge(),
+    });
+    console.log(`logged ${this.statusCode} / ${this.url}`);
+  }
+
+  getStatusLogLevel() {
+    return typeof this.loggerLevelsMap[this.statusCode] == "undefined"
+      ? "error"
+      : this.loggerLevelsMap[this.statusCode];
+  }
+
+  getStatusLogMessge() {
+    var data = {
+      responseCode: this.statusCode,
+      responseTime: this.responseTimes[0],
+      timestamp: new Date(),
+      url: this.url,
+      statusDuration: this.totalStatusTimeSeconds,
+      avgResponseTime: this.avgResponseTime(),
+    };
+    return JSON.stringify(data);
   }
 
   showStats() {

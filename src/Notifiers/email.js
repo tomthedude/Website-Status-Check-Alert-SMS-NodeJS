@@ -1,6 +1,7 @@
 module.exports = class EmailNotifier {
-  constructor() {
+  constructor(logger = false) {
     this.settings = require("../settings");
+    this.logger = logger;
   }
   isActive() {
     return this.settings.ALERT_EMAIL == "true";
@@ -26,11 +27,14 @@ module.exports = class EmailNotifier {
       attachments: attchment,
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (!this.logger) {
+        return;
+      }
       if (error) {
-        console.log(error);
+        this.logger.mailSentFailureLog(error);
       } else {
-        console.log("Email sent: " + info.response);
+        this.logger.mailSentSuccessLog(info.response);
       }
     });
   }

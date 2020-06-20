@@ -1,6 +1,8 @@
 module.exports = class SMS {
-  constructor() {
+  constructor(url, logger = false) {
     this.settings = require("../settings");
+    this.url = url;
+    this.logger = logger;
   }
   isActive() {
     return this.settings.ALERT_SMS == "true";
@@ -13,6 +15,9 @@ module.exports = class SMS {
     let client = new plivo.Client();
     client.messages.create(from, to, text).then(function (message_created) {
       console.log(message_created);
+      if (this.logger) {
+        this.logger.logSMSSent(message_created);
+      }
     });
   }
 

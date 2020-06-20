@@ -1,12 +1,13 @@
 module.exports = class Screenshot {
-  constructor(url) {
+  constructor(url, logger = false) {
     this.settings = require("../settings");
     this.url = url;
+    this.logger = logger;
   }
   handleScreenShot(statusCode, recipient, humanReadableStatusDuration) {
     this.humanReadableStatusDuration = humanReadableStatusDuration;
     var EmailNotifier = require(".././Notifiers/email");
-    this.emailHandler = new EmailNotifier();
+    this.emailHandler = new EmailNotifier(this.logger);
     this.takeAndSendScreenShot(statusCode, recipient);
   }
 
