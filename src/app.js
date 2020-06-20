@@ -4,6 +4,7 @@ var fs = require("fs");
 const settings = require("./settings");
 let mainAppClass = require("./Tools/Main");
 let interval = settings.CHECK_INTERVAL_OK;
+let allResults = {};
 
 // get websites from json file
 var websitesObject = JSON.parse(
@@ -17,6 +18,10 @@ for (url in websitesObject) {
   if (websitesObject[url] != true) {
     continue;
   }
-  let mainApp = new mainAppClass(url);
+  let mainApp = new mainAppClass(url, allResults);
   mainApp.checkWebsite(url, interval);
 }
+
+setInterval(() => {
+  console.table(allResults);
+}, settings.TERMINAL_ALL_RESULTS_INTERVAL);

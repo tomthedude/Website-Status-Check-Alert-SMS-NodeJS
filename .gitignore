@@ -1,5 +1,4 @@
 .env
 node_modules
 *.png
-logs/*
-.log
+*.log
