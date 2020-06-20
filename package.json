@@ -6,6 +6,7 @@
   "dependencies": {
     "capture-website": "^1.0.0",
     "dotenv": "^8.2.0",
+    "json-concat": "0.0.1",
     "node-telegram-bot-api": "^0.50.0",
     "nodemailer": "^6.4.10",
     "plivo": "^4.7.0",
