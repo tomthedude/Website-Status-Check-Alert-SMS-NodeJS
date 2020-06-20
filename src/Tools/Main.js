@@ -17,7 +17,21 @@ module.exports = class Main {
     this.https = require("https");
     this.responseTimes = [];
     this.url = url;
+    this.resultsFileName =
+      "results/" + this.url.replace(/[\\/:"*?<>|]+/, "") + ".log";
     this.allResults = allResults;
+    this.fs = require("fs");
+    this.appendPrevResults();
+  }
+  appendPrevResults() {
+    try {
+      this.prevResults = JSON.parse(
+        this.fs.readFileSync(this.resultsFileName, "utf8")
+      );
+      console.log(this.prevResults, "preResults");
+      this.allResults[this.url] = { ...this.prevResults };
+      this.prevResults = {};
+    } catch {}
   }
   checkWebsite(url, interval) {
     var responseTimeStart = new Date();
@@ -61,8 +75,6 @@ module.exports = class Main {
   }
 
   logStats() {
-    var fs = require("fs");
-
     this.logger.log({
       level: this.getStatusLogLevel(),
       message: this.getStatusLogMessge(),
@@ -79,9 +91,8 @@ module.exports = class Main {
       this.allResults[this.url] = {};
     }
     this.allResults[this.url][Date.now()] = resultObject;
-    this.resultsFileName = this.url.replace(/[\\/:"*?<>|]+/, "");
-    fs.writeFile(
-      `results/${this.resultsFileName}.log`,
+    this.fs.writeFile(
+      this.resultsFileName,
       JSON.stringify(this.allResults[this.url]),
       (err) => {
         if (err) {
