@@ -1,13 +1,14 @@
 module.exports = class Notifier {
-  constructor(url) {
+  constructor(url, logger = false) {
+    this.logger = logger;
+    this.url = url;
     this.settings = require("../settings");
     let screenshotClass = require(".././Tools/Screenshot");
-    this.screenshotHandler = new screenshotClass(url);
+    this.screenshotHandler = new screenshotClass(this.url, this.logger);
     let smsClass = require(".././Notifiers/sms");
-    this.smsHandler = new smsClass();
+    this.smsHandler = new smsClass(this.url, this.logger);
     let TelegramNotifier = require(".././Notifiers/telegram");
-    this.telegramHandler = new TelegramNotifier();
-    this.url = url;
+    this.telegramHandler = new TelegramNotifier(this.url, this.logger);
   }
   notify(res, humanReadableStatusDuration) {
     //send sms
@@ -31,8 +32,7 @@ module.exports = class Notifier {
     //send telegram
     this.telegramHandler.sendMessage(
       res.statusCode,
-      humanReadableStatusDuration,
-      this.url
+      humanReadableStatusDuration
     );
     console.log("error" + res.statusCode);
   }

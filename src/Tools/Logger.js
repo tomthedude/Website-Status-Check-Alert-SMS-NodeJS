@@ -60,6 +60,14 @@ module.exports = class Logger {
     console.log(`logged script error ${this.url}, ${text}`);
   }
 
+  sentTelegram(telegramObject) {
+    //telegramObject.chatId;
+    this.logScriptInfo({
+      action: "sent-telegram",
+      result: "unknown, assume success",
+    });
+  }
+
   logScriptInfo(info) {
     if (typeof info == "object") {
       info.url = this.url;
@@ -72,6 +80,14 @@ module.exports = class Logger {
       message: text,
     });
     console.log(`logged script info ${this.url}`);
+  }
+
+  logSMSSent(msgCreated) {
+    var wrapped = {
+      action: "send-sms",
+      message: msgCreated,
+    };
+    this.logScriptError(wrapped);
   }
 
   mailSentFailureLog(error) {
@@ -87,7 +103,7 @@ module.exports = class Logger {
     var wrapped = {
       status: "success",
       action: "send-email",
-      errorObject: msg,
+      message: msg,
     };
     this.logScriptInfo(wrapped);
   }

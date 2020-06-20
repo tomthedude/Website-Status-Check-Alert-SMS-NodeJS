@@ -27,7 +27,7 @@ module.exports = class EmailNotifier {
       attachments: attchment,
     };
 
-    transporter.sendMail(mailOptions, function (error, info) {
+    transporter.sendMail(mailOptions, (error, info) => {
       if (!this.logger) {
         return;
       }
