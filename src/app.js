@@ -24,4 +24,4 @@ for (url in websitesObject) {
 
 setInterval(() => {
   console.table(allResults);
-}, settings.TERMINAL_ALL_RESULTS_INTERVAL);
+}, settings.TERMINAL_ALL_RESULTS_INTERVAL * 1000);
