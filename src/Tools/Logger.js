@@ -2,7 +2,7 @@ module.exports = class Logger {
   constructor(logName) {
     this.initLogName(logName);
     this.url = logName;
-      const winston = require("winston");
+    const winston = require("winston");
     this.responseLogger = winston.createLogger({
       level: "info",
       format: winston.format.json(),
@@ -20,8 +20,8 @@ module.exports = class Logger {
       defaultMeta: { service: this.logName },
       transports: [
         new winston.transports.File({
-            filename: `logs/script-log-${this.logName}.log`,
-          }),
+          filename: `logs/script-log-${this.logName}.log`,
+        }),
         new winston.transports.Console(),
       ],
     });

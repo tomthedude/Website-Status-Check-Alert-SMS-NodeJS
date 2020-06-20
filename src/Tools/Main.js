@@ -38,8 +38,8 @@ module.exports = class Main {
           this.notifier.notify(res, this.humanReadableStatusDuration);
         }
         this.logStats();
-          this.showStats();
-          this.logger.logScriptInfo({anotherInteration: true});
+        this.showStats();
+        //this.logger.logScriptInfo({anotherInteration: true});
         setTimeout(() => {
           this.checkWebsite(url, interval);
         }, interval * 1000);
