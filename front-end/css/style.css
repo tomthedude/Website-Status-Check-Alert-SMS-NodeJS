@@ -37,3 +37,7 @@ h2 {
   border-radius: 50%;
   display: inline-block;
 }
+
+.dot{
+    margin-left: 5px;
+}

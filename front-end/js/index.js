@@ -26,9 +26,9 @@ $("#view-doctors").on("click", function () {
           });
         var dot = ordered[Object.keys(ordered)[0]].statusCode == 200 ? "greenDot" : "redDot";
         var html =
-          "<div><h2>" +
+          "<div style='display: flex;'><h2>" +
           getWebsiteName() +
-          "</h2><h2 class='" +
+          "</h2><h2 class='dot " +
           dot +
           "'></h2></div>";
         html += '<div class="tables-doctor-content">';
