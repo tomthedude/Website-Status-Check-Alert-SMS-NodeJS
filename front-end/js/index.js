@@ -24,7 +24,7 @@ $("#view-doctors").on("click", function () {
           .forEach(function (key) {
             ordered[key] = result[key];
           });
-        var dot = ordered[0].statusCode == 200 ? "greenDot" : "redDot";
+        var dot = ordered[Object.keys(ordered)[0]].statusCode == 200 ? "greenDot" : "redDot";
         var html =
           "<div><h2>" +
           getWebsiteName() +
