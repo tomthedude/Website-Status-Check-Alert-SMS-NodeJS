@@ -11,7 +11,6 @@ if (findGetParameter("site") === null) {
       var result = JSON.parse(evt);
       const ordered = {};
       Object.keys(result)
-        .reverse()
         .forEach(function (key) {
           ordered[result[key].URL] = {};
           ordered[result[key].URL][key] = result[key];
