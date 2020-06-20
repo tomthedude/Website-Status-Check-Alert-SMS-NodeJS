@@ -1,0 +1,16 @@
+{
+    "Customer": {
+      "dbConfig": {
+        "host": "localhost",
+        "port": 5984,
+        "dbName": "customers"
+      },
+      "Webcheck": {
+        "WEBSITE_URL": "https://lowchost.co.il",
+        "CHECK_INTERVAL_OK": 60,
+        "CHECK_INTERVAL_ERROR": 30,
+        "WEBSITES_FROM_FILE": "websites.json",
+        "initialDays": 1
+      }
+    }
+  }

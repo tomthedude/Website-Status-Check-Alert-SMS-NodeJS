@@ -1,6 +1,6 @@
+const config = require('config');
 module.exports = class Main {
   constructor(url) {
-    this.settings = require("../settings");
     this.totalStatusTimeSeconds = 0;
     this.latestStatus = 200;
     this.humanReadableStatusDuration = "";
@@ -11,6 +11,8 @@ module.exports = class Main {
     this.https = require("https");
     this.responseTimes = [];
     this.url = url;
+    this.OK_INTERVAL = config.get("Webcheck.CHECK_INTERVAL_OK");
+    this.ERROR_INTERVAL = config.get("Webcheck.CHECK_INTERVAL_ERROR");
   }
   checkWebsite(url, interval) {
     var responseTimeStart = new Date();
@@ -26,9 +28,9 @@ module.exports = class Main {
           this.totalStatusTimeSeconds * 1000
         );
         if (res.statusCode == "200") {
-          interval = this.settings.CHECK_INTERVAL_OK;
+          interval = this.OK_INTERVAL;
         } else {
-          interval = this.settings.CHECK_INTERVAL_ERROR;
+          interval = this.ERROR_INTERVAL;
           this.notifier.notify(res, this.humanReadableStatusDuration);
         }
         this.showStats();
