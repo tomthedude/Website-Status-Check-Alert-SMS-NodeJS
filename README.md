@@ -14,6 +14,8 @@ npm start
 
 can be used with pm2 start src/app.js
 
+results can be seen @ http://ip:8080/index.html
+
 ### Prerequisites
 
 NodeJS >= 10.1
