@@ -1,5 +1,5 @@
 module.exports = class Main {
-  constructor(url) {
+  constructor(url, allResults) {
     this.loggerLevelsMap = {
       200: "info",
       300: "info",
@@ -17,6 +17,21 @@ module.exports = class Main {
     this.https = require("https");
     this.responseTimes = [];
     this.url = url;
+    this.resultsFileName =
+      "results/" + this.url.replace(/[\\/:"*?<>|]+/, "") + ".log";
+    this.allResults = allResults;
+    this.fs = require("fs");
+    this.appendPrevResults();
+  }
+  appendPrevResults() {
+    try {
+      this.prevResults = JSON.parse(
+        this.fs.readFileSync(this.resultsFileName, "utf8")
+      );
+      console.log(this.prevResults, "preResults");
+      this.allResults[this.url] = { ...this.prevResults };
+      this.prevResults = {};
+    } catch {}
   }
   checkWebsite(url, interval) {
     var responseTimeStart = new Date();
@@ -64,6 +79,36 @@ module.exports = class Main {
       level: this.getStatusLogLevel(),
       message: this.getStatusLogMessge(),
     });
+    var resultObject = {
+      time: new Date().toTimeString(),
+      URL: this.url,
+      statusCode: this.statusCode,
+      "status duration": this.humanReadableStatusDuration,
+      responseTime: this.prettyMilliseconds(this.responseTimes[0].responseTime),
+      "avg response time": this.avgResponseTime(),
+    };
+    if (!this.allResults[this.url]) {
+      this.allResults[this.url] = {};
+    }
+    this.allResults[this.url][Date.now()] = resultObject;
+    this.fs.writeFile(
+      this.resultsFileName,
+      JSON.stringify(this.allResults[this.url]),
+      (err) => {
+        if (err) {
+          return this.logger.logScriptError({
+            result: "fail",
+            message: "could not write results to file, " + this.resultsFileName,
+            type: "write-to-file",
+          });
+        }
+        this.logger.logScriptError({
+          result: "success",
+          message: "could not write results to file, " + this.url,
+          type: "write-to-file",
+        });
+      }
+    );
     console.log(`logged ${this.statusCode} / ${this.url}`);
   }
 
