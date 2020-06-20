@@ -24,8 +24,13 @@ $("#view-doctors").on("click", function () {
           .forEach(function (key) {
             ordered[key] = result[key];
           });
-          var dot = ordered[0].statusCode == 200 ? "greenDot" : "redDot";
-        var html = "<div><h2>"+getWebsiteName()+"</h2><h2 class='"+dot+"'></h2></div>";
+        var dot = ordered[0].statusCode == 200 ? "greenDot" : "redDot";
+        var html =
+          "<div><h2>" +
+          getWebsiteName() +
+          "</h2><h2 class='" +
+          dot +
+          "'></h2></div>";
         html += '<div class="tables-doctor-content">';
         html +=
           '<table class="table">' +
@@ -77,7 +82,7 @@ $("#view-doctors").on("click", function () {
 });
 $("#view-doctors").trigger("click");
 setInterval(function () {
-    $("#view-doctors").trigger("click");
+  $("#view-doctors").trigger("click");
 }, 60000);
 
 function findGetParameter(parameterName) {
