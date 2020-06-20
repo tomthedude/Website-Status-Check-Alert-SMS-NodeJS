@@ -1,19 +1,39 @@
 table {
-    border-collapse: collapse;
-  }
-   th {
-    background: #ccc;
-  }
-  
-  th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
-  }
-  
-  tr:nth-child(even) {
-    background: #efefef;
-  }
-  
-  tr:hover {
-    background: #d1d1d1;
-  }
+  border-collapse: collapse;
+}
+th {
+  background: #ccc;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background: #efefef;
+}
+
+tr:hover {
+  background: #d1d1d1;
+}
+h2 {
+  display: inline-block;
+}
+
+.greenDot {
+  height: 25px;
+  width: 25px;
+  background-color: rgb(3, 194, 99);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.redDot {
+  height: 25px;
+  width: 25px;
+  background-color: rgb(245, 71, 71);
+  border-radius: 50%;
+  display: inline-block;
+}
