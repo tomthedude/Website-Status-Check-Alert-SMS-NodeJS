@@ -155,9 +155,9 @@ function indexPageAjax() {
               html +=
                 "<tr>" +
                 "<td>" +
-                "<div style='display: flex;'><h2>" +
+                "<div style='display: flex;'><a href='/index.html?site="+toShow[key].URL.replace(/[\\/:"*?<>|]+/, "")+".json'><h2>" +
                 toShow[key].URL +
-                "</h2><h2 class='dot " +
+                "</h2></a><h2 class='dot " +
                 dot +
                 "'></h2></div>" +
                 "</td>" +
