@@ -1,5 +1,5 @@
 // json data
-var api = "http://localhost:8080/" + findGetParameter("site"); //httpslowchost.co.il.json
+var api = "/" + findGetParameter("site"); //httpslowchost.co.il.json
 // button trigger
 $("#view-doctors").on("click", function () {
   var button = $(this);
