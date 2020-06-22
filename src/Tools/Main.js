@@ -21,7 +21,7 @@ module.exports = class Main {
     this.settings.RESULTS_FOLDER + this.url.replace(/[\\/:"*?<>|]+/, "") + ".json";
     this.allResults = allResults;
     this.fs = require("fs");
-    this.appendPrevResults();
+    //this.appendPrevResults();
   }
   appendPrevResults() {
     try {
@@ -90,10 +90,14 @@ module.exports = class Main {
     if (!this.allResults[this.url]) {
       this.allResults[this.url] = {};
     }
-    this.allResults[this.url][Date.now()] = resultObject;
+      this.allResults[this.url][Date.now()] = resultObject;
+      var prevResults = JSON.parse(
+        this.fs.readFileSync(this.resultsFileName, "utf8")
+      );
+      prevResults[Date.now()] = resultObject;
     this.fs.writeFile(
       this.resultsFileName,
-      JSON.stringify(this.allResults[this.url]),
+      JSON.stringify(prevResults),
       (err) => {
         if (err) {
           return this.logger.logScriptError({
@@ -107,7 +111,8 @@ module.exports = class Main {
           message: "wrote results to file, " + this.url,
           type: "write-to-file",
         });
-      }
+          this.allResults[this.url] = {};
+      },
     );
     console.log(`logged ${this.statusCode} / ${this.url}`);
   }
