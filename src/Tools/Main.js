@@ -52,6 +52,7 @@ module.exports = class Main {
           interval = this.settings.CHECK_INTERVAL_ERROR;
           this.notifier.notify(res, this.humanReadableStatusDuration);
         }
+        this.checkIsCached(res);
         this.logStats();
         //this.showStats();
         //this.logger.logScriptInfo({anotherInteration: true});
@@ -71,11 +72,20 @@ module.exports = class Main {
       });
   }
 
+  checkIsCached(res) {
+    if (this.url == "https://lowchost.co.il") {
+      this.isCached = typeof res.headers['x-litespeed-cache'] != 'undefined' && res.headers['x-litespeed-cache'] == 'hit';
+    } else {
+      this.isCached = false;
+    }
+  }
+
   avgResponseTime() {
     let totalTime = 0;
     this.responseTimes.forEach(function (responseTimeObject) {
       totalTime += responseTimeObject.responseTime;
     });
+    this.responseTimes.length = Math.max(1, this.responseTimes.length);
     return this.prettyMilliseconds(totalTime / this.responseTimes.length);
   }
 
@@ -91,6 +101,7 @@ module.exports = class Main {
       "status duration": this.humanReadableStatusDuration,
       responseTime: this.prettyMilliseconds(this.responseTimes[0].responseTime),
       "avg response time": this.avgResponseTime(),
+      cachedResponse: this.isCached
     };
     if (!this.allResults[this.url]) {
       this.allResults[this.url] = {};

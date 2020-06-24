@@ -48,10 +48,12 @@ if (findGetParameter("site") === null) {
             '<th scope="col">Status Duration</th>' +
             '<th scope="col">Response Time</th>' +
             '<th scope="col">Response Time Avg</th>' +
+            '<th scope="col">Is Cached</th>' +
             "</tr>" +
             "</thead>" +
             "<tbody>";
           for (var i in ordered) {
+            ordered[i].cachedResponse = typeof ordered[i].cachedResponse == 'undefined' ? 'not tested' : ordered[i].cachedResponse;
             html +=
               "<tr>" +
               "<td>" +
@@ -68,6 +70,9 @@ if (findGetParameter("site") === null) {
               "</td>" +
               "<td>" +
               ordered[i]["avg response time"] +
+              "</td>" +
+              "<td>" +
+              ordered[i].cachedResponse +
               "</td>" +
               "</tr>";
           }
@@ -146,11 +151,13 @@ function indexPageAjax() {
             '<th scope="col">Status Duration</th>' +
             '<th scope="col">Response Time</th>' +
             '<th scope="col">Response Time Avg</th>' +
+            '<th scope="col">Is Cached</th>' +
             "</tr>" +
             "</thead>" +
             "<tbody>";
           for(key in toShow){
             var dot = toShow[key].statusCode == 200 ? "greenDot" : "redDot";
+            toShow[key].cachedResponse = typeof toShow[key].cachedResponse == 'undefined' ? 'not tested' : toShow[key].cachedResponse;
             html += '<div class="tables-doctor-content">';
               html +=
                 "<tr>" +
@@ -175,6 +182,9 @@ function indexPageAjax() {
                 "</td>" +
                 "<td>" +
                 toShow[key]["avg response time"] +
+                "</td>" +
+                "<td>" +
+                toShow[key].cachedResponse +
                 "</td>" +
                 "</tr>";
     
