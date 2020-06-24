@@ -62,7 +62,11 @@ module.exports = class Main {
       .on("error", (e) => {
         e.url = url;
         this.logger.logScriptError(e);
+         this.notifier.notify({statusCode: e.code}, this.humanReadableStatusDuration);
         console.log("error with get, url: " + url);
+        setTimeout(() => {
+          this.checkWebsite(url, interval);
+        }, interval * 1000);
       });
   }
 
