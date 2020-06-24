@@ -53,7 +53,7 @@ module.exports = class Main {
           this.notifier.notify(res, this.humanReadableStatusDuration);
         }
         this.logStats();
-        this.showStats();
+        //this.showStats();
         //this.logger.logScriptInfo({anotherInteration: true});
         setTimeout(() => {
           this.checkWebsite(url, interval);
@@ -61,6 +61,7 @@ module.exports = class Main {
       })
       .on("error", (e) => {
         e.url = url;
+        this.logStats();
         this.logger.logScriptError(e);
          this.notifier.notify({statusCode: e.code}, this.humanReadableStatusDuration);
         console.log("error with get, url: " + url);
