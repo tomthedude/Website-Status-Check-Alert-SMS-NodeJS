@@ -107,7 +107,7 @@ module.exports = class Main {
       message: this.getStatusLogMessge(),
     });
     var resultObject = {
-      time: new Date().toTimeString(),
+      time: new Date(),
       URL: this.url,
       statusCode: this.statusCode,
       "status duration": this.humanReadableStatusDuration,
@@ -170,7 +170,7 @@ module.exports = class Main {
 
   showStats() {
     console.table({
-      time: new Date().toTimeString(),
+      time: new Date(),
       URL: this.url,
       statusCode: this.statusCode,
       "status duration": this.humanReadableStatusDuration,
