@@ -13,7 +13,7 @@ module.exports = class SMS {
     }
     let plivo = require("plivo");
     let client = new plivo.Client();
-    client.messages.create(from, to, text).then(function (message_created) {
+    client.messages.create(from, to, text).then((message_created) => {
       console.log(message_created);
       if (this.logger) {
         this.logger.logSMSSent(message_created);
