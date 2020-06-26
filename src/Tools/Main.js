@@ -62,6 +62,11 @@ module.exports = class Main {
       })
       .on("error", (e) => {
         e.url = url;
+        this.statusCode = e.code;
+        this.handleResponseTime(
+          new Date() - responseTimeStart,
+          this.statusCode
+        );
         this.logStats();
         this.logger.logScriptError(e);
          this.notifier.notify({statusCode: e.code}, this.humanReadableStatusDuration);
