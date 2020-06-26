@@ -41,3 +41,11 @@ h2 {
 .dot{
     margin-left: 5px;
 }
+
+#myChart{
+
+}
+.show-more { display: none; }
+.tables{
+  display: flex;
+}
