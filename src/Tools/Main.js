@@ -18,7 +18,9 @@ module.exports = class Main {
     this.responseTimes = [];
     this.url = url;
     this.resultsFileName =
-    this.settings.RESULTS_FOLDER + this.url.replace(/[\\/:"*?<>|]+/, "") + ".json";
+      this.settings.RESULTS_FOLDER +
+      this.url.replace(/[\\/:"*?<>|]+/, "") +
+      ".json";
     this.allResults = allResults;
     this.fs = require("fs");
     //this.appendPrevResults();
@@ -69,7 +71,10 @@ module.exports = class Main {
         );
         this.logStats();
         this.logger.logScriptError(e);
-         this.notifier.notify({statusCode: e.code}, this.humanReadableStatusDuration);
+        this.notifier.notify(
+          { statusCode: e.code },
+          this.humanReadableStatusDuration
+        );
         console.log("error with get, url: " + url);
         setTimeout(() => {
           this.checkWebsite(url, interval);
@@ -79,7 +84,9 @@ module.exports = class Main {
 
   checkIsCached(res) {
     if (this.url == "https://lowchost.co.il") {
-      this.isCached = typeof res.headers['x-litespeed-cache'] != 'undefined' && res.headers['x-litespeed-cache'] == 'hit';
+      this.isCached =
+        typeof res.headers["x-litespeed-cache"] != "undefined" &&
+        res.headers["x-litespeed-cache"] == "hit";
     } else {
       this.isCached = false;
     }
@@ -106,16 +113,21 @@ module.exports = class Main {
       "status duration": this.humanReadableStatusDuration,
       responseTime: this.prettyMilliseconds(this.responseTimes[0].responseTime),
       "avg response time": this.avgResponseTime(),
-      cachedResponse: this.isCached
+      cachedResponse: this.isCached,
     };
     if (!this.allResults[this.url]) {
       this.allResults[this.url] = {};
     }
-      this.allResults[this.url][Date.now()] = resultObject;
+    this.allResults[this.url][Date.now()] = resultObject;
+    try {
       var prevResults = JSON.parse(
         this.fs.readFileSync(this.resultsFileName, "utf8")
       );
-      prevResults[Date.now()] = resultObject;
+    } catch {
+      var prevResults = {};
+    }
+
+    prevResults[Date.now()] = resultObject;
     this.fs.writeFile(
       this.resultsFileName,
       JSON.stringify(prevResults),
@@ -132,8 +144,8 @@ module.exports = class Main {
           message: "wrote results to file, " + this.url,
           type: "write-to-file",
         });
-          this.allResults[this.url] = {};
-      },
+        this.allResults[this.url] = {};
+      }
     );
     console.log(`logged ${this.statusCode} / ${this.url}`);
   }
