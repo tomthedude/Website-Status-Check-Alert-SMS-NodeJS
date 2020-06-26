@@ -32,7 +32,13 @@ if (findGetParameter("site") === null) {
               ordered[key] = result[key];
               //console.log(sortedResponseTimeChart)
               lables.unshift(result[key].time);
-              sortedResponseTimeChart.unshift(parseInt(result[key].responseTime.replace("ms", "").replace("s", "")));
+              var resultMs = result[key].responseTime.replace("ms", "");
+              if (resultMs.includes('s')) {
+                resultMs = parseFloat(resultMs.replace("s", ""))*1000;
+              } else {
+                resultMs = parseInt(resultMs);
+              }
+              sortedResponseTimeChart.unshift(resultMs);
             });
             
             console.log(sortedResponseTimeChart)
