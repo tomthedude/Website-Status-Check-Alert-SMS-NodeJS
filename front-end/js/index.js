@@ -32,7 +32,6 @@ if (findGetParameter("site") === null) {
               ordered[key] = result[key];
               //console.log(sortedResponseTimeChart)
               lables.unshift(result[key].time);
-              ii++;
               sortedResponseTimeChart.unshift(parseInt(result[key].responseTime.replace("ms", "").replace("s", "")));
             });
             
