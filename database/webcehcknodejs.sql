@@ -46,7 +46,7 @@ CREATE TABLE `status_logs` (
 --
 -- Indexes for table `status logs`
 --
-ALTER TABLE `status logs`
+ALTER TABLE `status_logs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `url` (`url`,`timestamp`);
 
@@ -57,7 +57,7 @@ ALTER TABLE `status logs`
 --
 -- AUTO_INCREMENT for table `status logs`
 --
-ALTER TABLE `status logs`
+ALTER TABLE `status_logs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 

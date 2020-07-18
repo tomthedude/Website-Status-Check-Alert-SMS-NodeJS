@@ -111,22 +111,21 @@ module.exports = class Main {
   }
 
   logStats() {
-    console.log(`logged ${this.statusCode} / ${this.url}`);
-    this.dbConnection.insertNewResult(this);
-    return;
     this.logger.log({
       level: this.getStatusLogLevel(),
       message: this.getStatusLogMessge(),
     });
     var resultObject = {
-      time: new Date(),
-      URL: this.url,
+      url: this.url,
       statusCode: this.statusCode,
-      "status duration": this.humanReadableStatusDuration,
+      humanReadableStatusDuration: this.humanReadableStatusDuration,
       responseTime: this.prettyMilliseconds(this.responseTimes[0].responseTime),
-      "avg response time": this.avgResponseTime(),
-      cachedResponse: this.isCached,
+      avgResponseTime: this.avgResponseTime(),
+      isCached: this.isCached ? 1 : 0,
     };
+    this.dbConnection.insertNewResult(resultObject);
+    console.log(`logged ${this.statusCode} / ${this.url}`);
+    return;
     if (!this.allResults[this.url]) {
       this.allResults[this.url] = {};
     }
