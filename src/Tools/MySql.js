@@ -30,7 +30,7 @@ module.exports =  class MySql{
     }
 
     insertNewResult(webCheckObject) {
-        var sql = `INSERT INTO webcehcknodejs VALUES(NULL, "${webCheckObject.url}", NULL, "${webCheckObject.statusCode}", "${webCheckObject.humanReadableStatusDuration}", "${webCheckObject.responseTimes[0].responseTime}", "${webCheckObject.avgResponseTime()}", ${webCheckObject.isCached ? 1 : 0});`;
+        var sql = `INSERT INTO status_logs VALUES(NULL, "${webCheckObject.url}", NULL, "${webCheckObject.statusCode}", "${webCheckObject.humanReadableStatusDuration}", "${webCheckObject.responseTimes[0].responseTime}", "${webCheckObject.avgResponseTime()}", ${webCheckObject.isCached ? 1 : 0});`;
         this.runQuery(sql);
     }
 

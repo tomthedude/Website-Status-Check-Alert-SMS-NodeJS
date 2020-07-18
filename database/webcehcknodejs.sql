@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `status logs`
 --
 
-CREATE TABLE `status logs` (
+CREATE TABLE `status_logs` (
   `id` int(11) NOT NULL,
   `url` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
