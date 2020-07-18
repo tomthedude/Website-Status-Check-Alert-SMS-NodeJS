@@ -26,15 +26,15 @@ for (url in websitesObject) {
   mainApp.checkWebsite(url, interval);
 }
 
-setInterval(() => {
-  var tableResults = [];
-  for (url in allResults) {
-    for (data in allResults[url]) {
-      tableResults.unshift(allResults[url][data]);
-    }
-  }
-  console.table(tableResults);
-}, settings.TERMINAL_ALL_RESULTS_INTERVAL * 1000);
+// setInterval(() => {
+//   var tableResults = [];
+//   for (url in allResults) {
+//     for (data in allResults[url]) {
+//       tableResults.unshift(allResults[url][data]);
+//     }
+//   }
+//   console.table(tableResults);
+// }, settings.TERMINAL_ALL_RESULTS_INTERVAL * 1000);
 
 
 //resulstsServer.run();

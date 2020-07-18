@@ -58,7 +58,7 @@ module.exports = class Main {
           this.notifier.notify(res, this.humanReadableStatusDuration);
         }
         this.checkIsCached(res);
-        //this.logStats(); -- removed loggin stats as of 17/08, want to implement mysql or nosql insead of gian json file
+        this.logStats();
         //this.showStats();
         //this.logger.logScriptInfo({anotherInteration: true});
         setTimeout(() => {
@@ -73,7 +73,7 @@ module.exports = class Main {
           new Date() - responseTimeStart,
           this.statusCode
         );
-        //this.logStats();
+        this.logStats();
         this.logger.logScriptError(e);
         if (e.code != latestStatus) {
           this.notifier.notify(
@@ -108,6 +108,9 @@ module.exports = class Main {
   }
 
   logStats() {
+    console.log(`logged ${this.statusCode} / ${this.url}`);
+    // -- removed loggin stats as of 17/08, want to implement mysql or nosql insead of gian json file
+    return;
     this.logger.log({
       level: this.getStatusLogLevel(),
       message: this.getStatusLogMessge(),
@@ -153,7 +156,6 @@ module.exports = class Main {
         this.allResults[this.url] = {};
       }
     );
-    console.log(`logged ${this.statusCode} / ${this.url}`);
   }
 
   getStatusLogLevel() {
