@@ -73,7 +73,7 @@ module.exports = class Main {
           new Date() - responseTimeStart,
           this.statusCode
         );
-        this.logStats();
+        //this.logStats();
         this.logger.logScriptError(e);
         if (e.code != latestStatus) {
           this.notifier.notify(

@@ -37,5 +37,5 @@ setInterval(() => {
 }, settings.TERMINAL_ALL_RESULTS_INTERVAL * 1000);
 
 
-resulstsServer.run();
+//resulstsServer.run();
 //frontEndServer.run();
