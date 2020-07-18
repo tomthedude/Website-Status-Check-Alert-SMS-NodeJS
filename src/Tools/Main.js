@@ -37,8 +37,9 @@ module.exports = class Main {
   }
   checkWebsite(url, interval) {
     var responseTimeStart = new Date();
+    var latestStatus = this.latestStatus;
     this.https
-      .get(url, (res) => {
+      .get(url, {timeout: interval*1000}, (res) => {
         this.statusCode = res.statusCode;
         this.handleResponseTime(
           new Date() - responseTimeStart,
@@ -52,10 +53,12 @@ module.exports = class Main {
           interval = this.settings.CHECK_INTERVAL_OK;
         } else {
           interval = this.settings.CHECK_INTERVAL_ERROR;
+        }
+        if (latestStatus != res.statusCode) {
           this.notifier.notify(res, this.humanReadableStatusDuration);
         }
         this.checkIsCached(res);
-        this.logStats();
+        //this.logStats(); -- removed loggin stats as of 17/08, want to implement mysql or nosql insead of gian json file
         //this.showStats();
         //this.logger.logScriptInfo({anotherInteration: true});
         setTimeout(() => {
@@ -64,6 +67,7 @@ module.exports = class Main {
       })
       .on("error", (e) => {
         e.url = url;
+        var latestStatus = this.statusCode;
         this.statusCode = e.code;
         this.handleResponseTime(
           new Date() - responseTimeStart,
@@ -71,10 +75,12 @@ module.exports = class Main {
         );
         this.logStats();
         this.logger.logScriptError(e);
-        this.notifier.notify(
-          { statusCode: e.code },
-          this.humanReadableStatusDuration
-        );
+        if (e.code != latestStatus) {
+          this.notifier.notify(
+            { statusCode: e.code },
+            this.humanReadableStatusDuration
+          );
+        }
         console.log("error with get, url: " + url);
         setTimeout(() => {
           this.checkWebsite(url, interval);
