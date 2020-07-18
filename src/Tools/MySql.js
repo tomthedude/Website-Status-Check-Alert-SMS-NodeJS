@@ -9,7 +9,7 @@ module.exports =  class MySql{
           password: password
         });
         
-        this.sqlCon.connect(function(err) {
+        this.sqlCon.connect((err) => {
           if (err) throw err;
           // start sql logging flag
             this.runQuery('use webcehcknodejs;');
