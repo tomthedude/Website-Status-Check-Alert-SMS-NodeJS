@@ -22,6 +22,7 @@ for (url in websitesObject) {
   if (websitesObject[url] != true) {
     continue;
   }
+  console.log('started ' + url);
   let mainApp = new mainAppClass(url, allResults);
   mainApp.checkWebsite(url, interval);
 }

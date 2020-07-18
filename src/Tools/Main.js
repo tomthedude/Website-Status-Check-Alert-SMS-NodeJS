@@ -36,6 +36,7 @@ module.exports = class Main {
     } catch {}
   }
   checkWebsite(url, interval) {
+    console.log('started loop ' + url + ' , '+interval);
     var responseTimeStart = new Date();
     var latestStatus = this.latestStatus;
     this.https
