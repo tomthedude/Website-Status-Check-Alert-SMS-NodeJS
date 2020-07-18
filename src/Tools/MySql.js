@@ -1,18 +1,18 @@
 module.exports =  class MySql{
-    constructor(host, user, password) {
+    constructor(host, user, password, database) {
         this.isConnected = false;
         var mysql = require('mysql');
 
         this.sqlCon = mysql.createConnection({
           host: host,
           user: user,
-          password: password
+          password: password,
+          database: database
         });
         
         this.sqlCon.connect((err) => {
           if (err) throw err;
           // start sql logging flag
-            this.runQuery('use webcehcknodejs;');
             this.isConnected = true;
             console.log("Connected To SQL!");
         });
