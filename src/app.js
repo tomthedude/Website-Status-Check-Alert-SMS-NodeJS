@@ -10,21 +10,6 @@ let resulstsServer = new resultsServerClass();
 let interval = settings.CHECK_INTERVAL_OK;
 let allResults = {};
 
-//export to file mysql
-var mysql = require('mysql');
-
-let sqlCon = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: ""
-});
-
-sqlCon.connect(function(err) {
-  if (err) throw err;
-  // start sql logging flag
-  console.log("Connected To SQL!");
-});
-// end sql
 // get websites from json file
 var websitesObject = JSON.parse(
   fs.readFileSync(settings.WEBSITES_FROM_FILE, "utf8")

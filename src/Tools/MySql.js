@@ -1,0 +1,31 @@
+module.exports =  class MySql{
+    constructor(host,user, password){
+        var mysql = require('mysql');
+
+        this.sqlCon = mysql.createConnection({
+          host: host,
+          user: user,
+          password: password
+        });
+        
+        this.sqlCon.connect(function(err) {
+          if (err) throw err;
+          // start sql logging flag
+          console.log("Connected To SQL!");
+        });
+    }
+
+    runQuery(sqlQurey) {
+        console.log("mysql query: " + sqlQurey);
+        this.sqlCon.query(sqlQurey, function (err, result) {
+          if (err) throw err;
+          console.log("Mysql Result: " + result);
+        });
+    }
+
+    insertNewResult(webCheckObject) {
+        var sql = `INSERT INTO webcehcknodejs VALUES(NULL, "${webCheckObject.url}", NULL, "${webCheckObject.statusCode}", "${webCheckObject.humanReadableStatusDuration}", "${webCheckObject.responseTimes[0].responseTime}", "${webCheckObject.avgResponseTime()}", ${webCheckObject.isCached});`;
+        this.runQuery(sql);
+    }
+
+}
