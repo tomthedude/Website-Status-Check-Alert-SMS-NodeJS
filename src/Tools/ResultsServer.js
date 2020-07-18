@@ -1,5 +1,6 @@
 module.exports = class ResultsServer {
   run() {
+    // need to make this support mysql instead of json files
     this.settings = require("../settings");
     var fs = require("fs"),
       http = require("http");
