@@ -111,6 +111,12 @@ module.exports = class Main {
   logStats() {
     console.log(`logged ${this.statusCode} / ${this.url}`);
     // -- removed loggin stats as of 17/08, want to implement mysql or nosql insead of gian json file
+    var sql = `INSERT INTO webcehcknodejs VALUES(NULL, "${this.url}", NULL, "${this.statusCode}", "${this.humanReadableStatusDuration}", "${this.responseTimes[0].responseTime}", "${this.avgResponseTime()}", ${this.isCached});`;
+    console.log(sql);
+    sqlCon.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log("Mysql Result: " + result);
+    });
     return;
     this.logger.log({
       level: this.getStatusLogLevel(),
