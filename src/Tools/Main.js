@@ -42,7 +42,8 @@ module.exports = class Main {
     var responseTimeStart = new Date();
     var latestStatus = this.latestStatus;
     this.https
-      .get(url, {timeout: interval*1000}, (res) => {
+      .get(url, {
+        timeout: interval * 1000, headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36' }}, (res) => {
         this.statusCode = res.statusCode;
         this.handleResponseTime(
           new Date() - responseTimeStart,
